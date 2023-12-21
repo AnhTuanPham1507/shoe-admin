@@ -10,6 +10,7 @@ export default function CreateBlog({isShow, onFormSubmit, onClose}) {
     const [image, setImage] = useState(null);
     const [authorName, setAuthorName] = useState(null);
     const [content, setContent] = useState(null);
+    const [shortDescription, setShortDescription] = useState(null);
 
     const renderTitleInput = (
         <Stack style={{marginBottom: '10px'}} direction="Column" alignItems="flexStart" justifyContent="flexStart" >
@@ -44,6 +45,13 @@ export default function CreateBlog({isShow, onFormSubmit, onClose}) {
         </Stack>
     )
 
+    const renderShortDescriptionInput = (
+        <Stack style={{marginBottom: '10px'}} direction="Column" alignItems="flexStart" justifyContent="flexStart" >
+            <FormLabel><strong>Mô tả<span style={{color:"red"}}>*</span></strong></FormLabel>
+            <TextField placeholder='mô tả...' size='small' value={shortDescription} onChange={(e) => setShortDescription(e.target.value)} required/>
+        </Stack>
+    )
+
     const renderContentInput = (
         <Stack style={{marginBottom: '10px'}} direction="Column" alignItems="flexStart" justifyContent="flexStart">
             <FormLabel><strong>Mô tả<span style={{color:"red"}}>*</span></strong></FormLabel>
@@ -66,13 +74,14 @@ export default function CreateBlog({isShow, onFormSubmit, onClose}) {
                 </DialogTitle>
                 <DialogContent>
                     {renderTitleInput}
-                    {renderImageInput}
+                    {renderShortDescriptionInput}
                     {renderContentInput}
+                    {renderImageInput}
                     {renderAuthorNameInput}
                 </DialogContent>
 
                 <DialogActions>
-                    <Button onClick={() => {onFormSubmit({title,image, authorName, content})}}>Lưu</Button>
+                    <Button onClick={() => {onFormSubmit({title,image, authorName, content, shortDescription})}}>Lưu</Button>
                     <Button color="error" onClick={() => {onClose()}}>Đóng</Button>
                 </DialogActions>
             </Box>

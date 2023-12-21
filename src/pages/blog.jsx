@@ -127,6 +127,10 @@ const handleCloseDeleteModal = () => {
             return false;
         }
 
+        case (!isString(data.shortDescription)):{
+          setErrorMessage('Mô tả bài viết không hợp lệ')
+          return false;
+        }
 
         default: {return true;}
     }
@@ -138,6 +142,7 @@ const handleCloseDeleteModal = () => {
             const formData = new FormData();
             formData.append('title', data.title);
             formData.append('authorName', data.authorName);
+            formData.append('shortDescription', data.shortDescription);
             formData.append('content', data.content);
             formData.append('image', data.image);
 
@@ -174,6 +179,11 @@ const validateUpdateFormData = (data) => {
           return false;
       }
 
+      case (!isString(data.shortDescription)):{
+        setErrorMessage('Mô tả bài viết không hợp lệ')
+        return false;
+      }
+
       default: {return true;}
   }
 }
@@ -186,7 +196,7 @@ const handleUpdateFormSubmit = async (data) => {
             if(data.content) formData.append('content', data.content);
             if(data.authorName) formData.append('authorName', data.authorName);
             if(data.image) formData.append('image', data.image);
-
+            if(data.shortDescription)  formData.append('shortDescription', data.shortDescription);
             const updateBlogRes = await blogAPI.update(
                activeBlog._id,
                formData

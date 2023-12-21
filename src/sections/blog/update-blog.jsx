@@ -10,6 +10,7 @@ export default function UpdateBlog({isShow, onFormSubmit, onClose, blog}) {
     const [image, setImage] = useState(null);
     const [authorName, setAuthorName] = useState(null);
     const [content, setContent] = useState(null);
+    const [shortDescription, setShortDescription] = useState(null);
 
     useEffect(
         () => {
@@ -18,6 +19,7 @@ export default function UpdateBlog({isShow, onFormSubmit, onClose, blog}) {
                 setImage(blog.image);
                 setAuthorName(blog.authorName);
                 setContent(blog.content);
+                setShortDescription(blog.shortDescription)
             }
         }, [blog]
     )
@@ -55,6 +57,13 @@ export default function UpdateBlog({isShow, onFormSubmit, onClose, blog}) {
         </Stack>
     )
 
+    const renderShortDescriptionInput = (
+        <Stack style={{marginBottom: '10px'}} direction="Column" alignItems="flexStart" justifyContent="flexStart" >
+            <FormLabel><strong>Mô tả<span style={{color:"red"}}>*</span></strong></FormLabel>
+            <TextField placeholder='mô tả...' size='small' value={shortDescription} onChange={(e) => setShortDescription(e.target.value)} required/>
+        </Stack>
+    )
+
     const renderContentInput = (
         <Stack style={{marginBottom: '10px'}} direction="Column" alignItems="flexStart" justifyContent="flexStart">
             <FormLabel><strong>Mô tả<span style={{color:"red"}}>*</span></strong></FormLabel>
@@ -77,13 +86,14 @@ export default function UpdateBlog({isShow, onFormSubmit, onClose, blog}) {
                 </DialogTitle>
                 <DialogContent>
                     {renderTitleInput}
-                    {renderImageInput}
+                    {renderShortDescriptionInput}
                     {renderContentInput}
+                    {renderImageInput}
                     {renderAuthorNameInput}
                 </DialogContent>
 
                 <DialogActions>
-                    <Button onClick={() => {onFormSubmit({title,image, authorName, content})}}>Lưu</Button>
+                    <Button onClick={() => {onFormSubmit({title,image, authorName, content, shortDescription})}}>Lưu</Button>
                     <Button color="error" onClick={() => {onClose()}}>Đóng</Button>
                 </DialogActions>
             </Box>
