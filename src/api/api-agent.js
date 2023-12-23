@@ -88,7 +88,12 @@ const statisticAPI = {
 }
 
 const userAPI = {
-  login: (payload) => axi.post('/api/v1/user/login/admin', payload)
+  login: (payload) => axi.post('/api/v1/user/login/admin', payload),
+  getInfo: (token) => axi.get('/api/v1/user/info', {
+    headers: {
+      authorization: token
+    }
+  })
 }
 
 export {

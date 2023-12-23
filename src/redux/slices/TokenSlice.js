@@ -14,7 +14,7 @@ export const tokenSlice = createSlice({
             state.value = action.payload
             localStorage.setItem("token", action.payload)
         },
-        clearToken: (state, action) => {
+        clearToken: (state) => {
             state.value = null
             localStorage.removeItem("token")
         }

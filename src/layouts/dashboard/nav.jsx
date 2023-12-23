@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -14,7 +15,7 @@ import { RouterLink } from 'src/routes/components';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
-import { account } from 'src/_mock/account';
+import { userAPI } from 'src/api/api-agent';
 
 import Logo from 'src/components/logo';
 import Scrollbar from 'src/components/scrollbar';
@@ -25,6 +26,9 @@ import navConfig from './config-navigation';
 // ----------------------------------------------------------------------
 
 export default function Nav({ openNav, onCloseNav }) {
+  const token = useSelector(state => state.token.value);
+  const [account, setAccount] = useState(null);
+
   const pathname = usePathname();
 
   const upLg = useResponsive('up', 'lg');
@@ -35,6 +39,20 @@ export default function Nav({ openNav, onCloseNav }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
+
+  useEffect(() => {
+    const getUserInfo = async () => {
+      try {
+        const getAccountInfoRes = await userAPI.getInfo(token);
+        setAccount(getAccountInfoRes.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    if(token) getUserInfo();
+  }, [token])
+
 
   const renderAccount = (
     <Box
@@ -49,13 +67,13 @@ export default function Nav({ openNav, onCloseNav }) {
         bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
       }}
     >
-      <Avatar src={account.photoURL} alt="photoURL" />
+      <Avatar src='/assets/images/avatars/avatar_25.jpg' alt="photoURL" />
 
       <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{account.displayName}</Typography>
+        <Typography variant="subtitle2">{account?.fullName}</Typography>
 
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {account.role}
+          {account?.role}
         </Typography>
       </Box>
     </Box>

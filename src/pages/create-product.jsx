@@ -52,7 +52,9 @@ export default function CreateProduct() {
 
                 setClassifications(tempClassifications);
                 setMainClassification(_.first(tempClassifications)?._id)
-            } catch (error) {
+
+                setSubClassification(tempClassifications[1]?._id)
+            } catch (error) {   
                 console.log(error);
             }
         };
