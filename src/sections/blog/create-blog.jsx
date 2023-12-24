@@ -47,14 +47,14 @@ export default function CreateBlog({isShow, onFormSubmit, onClose}) {
 
     const renderShortDescriptionInput = (
         <Stack style={{marginBottom: '10px'}} direction="Column" alignItems="flexStart" justifyContent="flexStart" >
-            <FormLabel><strong>Mô tả<span style={{color:"red"}}>*</span></strong></FormLabel>
+            <FormLabel><strong>Mô tả ngắn<span style={{color:"red"}}>*</span></strong></FormLabel>
             <TextField placeholder='mô tả...' size='small' value={shortDescription} onChange={(e) => setShortDescription(e.target.value)} required/>
         </Stack>
     )
 
     const renderContentInput = (
         <Stack style={{marginBottom: '10px'}} direction="Column" alignItems="flexStart" justifyContent="flexStart">
-            <FormLabel><strong>Mô tả<span style={{color:"red"}}>*</span></strong></FormLabel>
+            <FormLabel><strong>Nội dung<span style={{color:"red"}}>*</span></strong></FormLabel>
             <CKEditor
                 editor={ ClassicEditor }
                 data={content}
