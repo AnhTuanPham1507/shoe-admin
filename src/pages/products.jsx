@@ -9,13 +9,13 @@ import { Button, Pagination } from '@mui/material';
 
 // import { products } from 'src/_mock/products';
 
+import _ from 'lodash';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 
 import Iconify from 'src/components/iconify';
 
 import { productAPI } from '../api/api-agent';
-import ProductSort from '../sections/products/product-sort';
 import ProductCard from '../sections/products/product-card';
 import ProductFilters from '../sections/products/product-filters';
 
@@ -28,6 +28,7 @@ export default function Products() {
   const [openFilter, setOpenFilter] = useState(false);
   const [totalPage, setTotalPage] = useState(1);
   const [page, setPage] = useState(1);
+  const [filterParams, setFilterParams] = useState({});
 
   const handleOpenFilter = () => {
     setOpenFilter(true);
@@ -41,8 +42,33 @@ export default function Products() {
     () => {
       const getProductList = async () => {
         try {
-          const queryParams = `page=${page}&perPage=${5}`;
+          let queryParams = `page=${page}&perPage=${5}&`;
 
+          Object.entries(_.omitBy(filterParams, _.isNil)).forEach(([key, value]) => {
+            switch (key) {
+              case 'selectedPartners':{
+                console.log(value)
+                queryParams += value.reduce((r, partner) => `${r}partnerIds[]=${partner}&`, '');
+                break;
+              } 
+              case 'selectedCategories':{
+                queryParams += value.reduce((r, cate) => `${r}categoryIds[]=${cate}&`, '');
+                break;
+              }            
+
+              case 'fromPrice': {
+                queryParams += `fromPrice=${value}&`;
+                break;
+              }
+
+              case 'toPrice': {
+                queryParams += `toPrice=${value}&`;
+                break;
+              }
+              default:
+                break;
+            }
+          })
           const getProductListRes = await productAPI.getAll(queryParams);
           const tempProductList = getProductListRes.data;
 
@@ -54,10 +80,12 @@ export default function Products() {
       }
 
       getProductList();
-    }, [page]
+    }, [page, filterParams]
   )
 
-  
+  const handleFilter = (params) => {
+    setFilterParams(params);
+  }
 
   return (
     <div>
@@ -86,9 +114,11 @@ export default function Products() {
               openFilter={openFilter}
               onOpenFilter={handleOpenFilter}
               onCloseFilter={handleCloseFilter}
+              handleFilter={handleFilter}
             />
 
-              <ProductSort />
+              {/* <ProductSort 
+              /> */}
           </Stack>
         </Stack>
 

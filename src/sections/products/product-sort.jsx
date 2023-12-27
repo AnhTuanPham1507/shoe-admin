@@ -1,4 +1,6 @@
+/* eslint-disable no-nested-ternary */
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import Menu from '@mui/material/Menu';
 import Button from '@mui/material/Button';
@@ -11,14 +13,13 @@ import Iconify from 'src/components/iconify';
 // ----------------------------------------------------------------------
 
 const SORT_OPTIONS = [
-  { value: 'featured', label: 'Featured' },
-  { value: 'newest', label: 'Newest' },
-  { value: 'priceDesc', label: 'Price: High-Low' },
-  { value: 'priceAsc', label: 'Price: Low-High' },
+  { value: 'lowToHight', label: 'Giá thấp nhất' },
+  { value: 'highToLow', label: 'Giá cao nhất' },
 ];
 
-export default function ShopProductSort() {
+export default function ShopProductSort({handleSort}) {
   const [open, setOpen] = useState(null);
+  const [sort, setSort] = useState(null);
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -38,7 +39,7 @@ export default function ShopProductSort() {
       >
         Sắp xếp:&nbsp;
         <Typography component="span" variant="subtitle2" sx={{ color: 'text.secondary' }}>
-          Mới nhất
+          {sort === 'lowToHight' ? 'Thấp nhất': sort === 'highToLow' ? 'Cao nhất': ''}
         </Typography>
       </Button>
 
@@ -59,7 +60,7 @@ export default function ShopProductSort() {
         }}
       >
         {SORT_OPTIONS.map((option) => (
-          <MenuItem key={option.value} selected={option.value === 'newest'} onClick={handleClose}>
+          <MenuItem key={option.value} onClick={() => {handleClose(); setSort(option.value); handleSort(option.value);}}> 
             {option.label}
           </MenuItem>
         ))}
@@ -67,3 +68,7 @@ export default function ShopProductSort() {
     </>
   );
 }
+
+ShopProductSort.propTypes = {
+  handleSort: PropTypes.func,
+};
